@@ -30,14 +30,16 @@ function submit() {
     student_star: star.value,
     student_comment: comment.value.trim() || '满意',
   })
-  message.success('评价已保存（双向评价数据写入本地缓存）')
+  message.success('评价已提交')
 }
+
+const coachName = computed(() => coaches.value.find(c => c.id === coachId.value)?.name ?? '')
 </script>
 
 <template>
-  <div class="space-y-4 rounded-xl bg-white p-4 shadow-sm">
-    <p class="text-sm text-slate-600">
-      学员对教练的星级与文字评价（论文：评价功能模块）
+  <div class="space-y-4">
+    <p class="rounded-lg bg-white px-3 py-2 text-[13px] leading-relaxed text-slate-600 shadow-sm">
+      论文图5.15：学员对教练星级与文字评价；可查看教练对学员的评价与双方回复。
     </p>
     <n-select
       v-model:value="coachId"
@@ -46,7 +48,7 @@ function submit() {
     />
     <div>
       <div class="mb-1 text-sm text-slate-600">
-        星级
+        我的评分（1–5 星）
       </div>
       <n-rate v-model:value="star" />
     </div>
@@ -54,15 +56,40 @@ function submit() {
     <n-button type="primary" block @click="submit">
       提交评价
     </n-button>
-    <n-divider />
-    <div v-if="existing" class="text-sm text-slate-600">
-      <div>当前记录：学员 {{ existing.student_star }} 星</div>
-      <div class="mt-1">
-        {{ existing.student_comment }}
+
+    <n-divider>双向评价</n-divider>
+    <div v-if="existing" class="space-y-3 rounded-xl bg-white p-3 shadow-sm">
+      <div>
+        <div class="text-xs font-medium text-slate-500">
+          我对 {{ coachName }} 的评价
+        </div>
+        <div class="mt-1 text-amber-600">
+          ★ {{ existing.student_star }}
+        </div>
+        <p class="mt-1 text-sm text-slate-800">
+          {{ existing.student_comment }}
+        </p>
       </div>
-      <div v-if="existing.coach_comment" class="mt-2 border-t border-slate-100 pt-2">
-        教练回复：{{ existing.coach_comment }}
+      <div v-if="existing.coach_star || existing.coach_comment" class="border-t border-slate-100 pt-3">
+        <div class="text-xs font-medium text-slate-500">
+          教练对我的评价
+        </div>
+        <div v-if="existing.coach_star" class="mt-1 text-amber-600">
+          ★ {{ existing.coach_star }}
+        </div>
+        <p class="mt-1 text-sm text-slate-800">
+          {{ existing.coach_comment }}
+        </p>
+      </div>
+      <div v-if="existing.coach_reply || existing.student_reply" class="border-t border-slate-100 pt-3 text-xs text-slate-600">
+        <p v-if="existing.coach_reply">
+          <span class="text-slate-400">教练回复：</span>{{ existing.coach_reply }}
+        </p>
+        <p v-if="existing.student_reply" class="mt-2">
+          <span class="text-slate-400">我的回复：</span>{{ existing.student_reply }}
+        </p>
       </div>
     </div>
+    <n-empty v-else description="暂无评价记录，提交后将显示在此" />
   </div>
 </template>

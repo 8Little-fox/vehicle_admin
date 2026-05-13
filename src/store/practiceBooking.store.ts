@@ -14,14 +14,27 @@ export const usePracticeBookingStore = createGlobalState(() => {
       return { ok: false, message: '练车项目不存在' }
     const proj = projects.value[pi]!
     if (proj.status !== '可预约')
-      return { ok: false, message: '该项目不可预约' }
+      return { ok: false, message: '该时段已被预约或不可选择' }
     if (proj.booked_num >= proj.max_num)
-      return { ok: false, message: '名额已满' }
+      return { ok: false, message: '该时段已被预约或不可选择' }
     const dup = list.value.some(
       b => b.student_id === input.student_id && b.project_id === input.project_id && b.status !== '已驳回' && b.status !== '已取消',
     )
     if (dup)
       return { ok: false, message: '您已预约该项目，请勿重复提交' }
+    /** 论文：同一天同一时段只能预约一次（跨项目冲突检测） */
+    const sameSlot = list.value.some((b) => {
+      if (b.student_id !== input.student_id)
+        return false
+      if (b.status === '已驳回' || b.status === '已取消')
+        return false
+      const other = projects.value.find(x => x.id === b.project_id)
+      if (!other)
+        return false
+      return other.train_date === proj.train_date && other.train_time === proj.train_time
+    })
+    if (sameSlot)
+      return { ok: false, message: '您在该时段已有其他预约' }
 
     const row: PracticeBooking = {
       id: nextNumericId(list.value),
@@ -35,7 +48,7 @@ export const usePracticeBookingStore = createGlobalState(() => {
     }
     list.value = [...list.value, row]
     updateProject(pi, { ...proj, booked_num: proj.booked_num + 1 })
-    return { ok: true, message: '预约已提交，请等待审核', booking: row }
+    return { ok: true, message: '预约提交成功，请等待审核', booking: row }
   }
 
   function setStatus(bookingId: number, status: PracticeBooking['status'], remark?: string) {

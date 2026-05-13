@@ -16,7 +16,7 @@ const mine = computed(() => {
 
 function pay(row: (typeof dataList.value)[0]) {
   if (row.pay_status === '已支付') {
-    message.info('已支付')
+    message.info('该订单已支付')
     return
   }
   const i = dataList.value.findIndex(x => x.id === row.id)
@@ -28,43 +28,63 @@ function pay(row: (typeof dataList.value)[0]) {
     pay_time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
     invoice: `INV-${dayjs().format('YYYYMMDDHHmmss')}`,
   })
-  message.success('支付成功（本地模拟）')
+  message.success('支付成功（演示：模拟微信支付回调）')
+}
+
+function copyInvoice(inv: string) {
+  if (!inv)
+    return
+  void navigator.clipboard?.writeText(inv).then(() => {
+    message.success('发票凭证号已复制')
+  }).catch(() => {
+    message.info(inv)
+  })
 }
 </script>
 
 <template>
   <div class="space-y-3">
-    <p class="text-sm text-slate-600">
-      费用查询与在线支付（论文：支付费用功能模块）
+    <p class="rounded-lg bg-white px-3 py-2 text-[13px] leading-relaxed text-slate-600 shadow-sm">
+      论文图5.13：待支付 / 已支付与发票凭证；真实环境将调起微信支付 JSAPI。
     </p>
     <div
       v-for="f in mine"
       :key="f.id"
-      class="flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
+      class="overflow-hidden rounded-xl bg-white shadow-sm"
     >
-      <div class="flex justify-between gap-2">
-        <span class="font-medium text-slate-800">{{ f.fee_name }}</span>
-        <span class="text-teal-700 font-semibold">¥{{ f.fee_amount }}</span>
+      <div class="border-b border-slate-100 px-3 py-3">
+        <div class="flex justify-between gap-2">
+          <span class="text-[15px] font-medium text-slate-900">{{ f.fee_name }}</span>
+          <span class="text-lg font-semibold text-[#fa5151]">¥{{ f.fee_amount }}</span>
+        </div>
+        <p class="mt-1 text-xs text-slate-500">
+          {{ f.fee_type }} · {{ f.pay_status }}
+          <template v-if="f.pay_time">
+            · {{ f.pay_time }}
+          </template>
+        </p>
       </div>
-      <div class="text-xs text-slate-500">
-        {{ f.fee_type }} · {{ f.pay_status }}
-        <template v-if="f.pay_time">
-          · {{ f.pay_time }}
-        </template>
-      </div>
-      <n-button
-        v-if="f.pay_status === '待支付'"
-        type="primary"
-        size="small"
-        class="self-start"
-        @click="pay(f)"
-      >
-        立即支付
-      </n-button>
-      <div v-if="f.invoice" class="text-xs text-slate-500">
-        凭证 {{ f.invoice }}
+      <div class="flex gap-2 p-3">
+        <n-button
+          v-if="f.pay_status === '待支付'"
+          class="flex-1"
+          type="primary"
+          size="large"
+          @click="pay(f)"
+        >
+          微信支付
+        </n-button>
+        <n-button
+          v-if="f.invoice"
+          secondary
+          class="flex-1"
+          size="large"
+          @click="copyInvoice(f.invoice)"
+        >
+          复制发票凭证
+        </n-button>
       </div>
     </div>
-    <n-empty v-if="!mine.length" description="暂无费用记录" />
+    <n-empty v-if="!mine.length" description="暂无费用订单" />
   </div>
 </template>

@@ -69,7 +69,7 @@ function submit() {
         学员注册
       </h1>
       <p class="mb-6 text-center text-sm text-slate-600">
-        对应论文用户注册：用户名、密码、姓名、性别、年龄、身份证、手机、地址、报名车型
+        用户注册：用户名、密码、姓名、性别、年龄、身份证、手机、地址、报名车型
       </p>
       <n-form label-placement="left" label-width="96">
         <n-form-item label="用户名">

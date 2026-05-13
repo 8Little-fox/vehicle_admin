@@ -24,5 +24,15 @@ const initData: TeachingResource[] = [
 ]
 
 export const useTeachingResourceStore = createGlobalState(() => {
-  return useCurd<TeachingResource>({ key: 'driving-school-resources', initData })
+  const curd = useCurd<TeachingResource>({ key: 'driving-school-resources', initData })
+
+  function recordClick(id: number) {
+    const i = curd.dataList.value.findIndex(x => x.id === id)
+    if (i < 0)
+      return
+    const r = curd.dataList.value[i]!
+    curd.updateData(i, { ...r, click_num: (r.click_num ?? 0) + 1 })
+  }
+
+  return { ...curd, recordClick }
 })

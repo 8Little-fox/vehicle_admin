@@ -68,17 +68,11 @@ function handleLogin() {
     <div
       class="login relative z-10 w-full max-w-md rounded-2xl border border-white/50 bg-white/80 p-8 shadow-2xl backdrop-blur-md sm:p-10"
     >
-      <h1 class="mb-2 text-center text-2xl font-semibold text-slate-800">
-        驾校管理系统
+      <h1 class="mb-1 text-center text-[22px] font-semibold text-slate-900">
+        用户登录
       </h1>
-      <p class="mb-6 text-center text-sm text-slate-600">
-        学员端为 H5；数据存于本地缓存（store），无 SpringBoot 后端
-      </p>
       <n-space vertical :size="14">
         <div>
-          <div class="mb-1 text-sm text-slate-600">
-            登录身份
-          </div>
           <n-radio-group v-model:value="form.role" name="role" class="w-full">
             <n-space>
               <n-radio value="学员">

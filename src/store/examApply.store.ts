@@ -14,12 +14,15 @@ export const useExamApplyStore = createGlobalState(() => {
       return { ok: false, message: '考试信息不存在' }
     const ex = exams.value[ei]!
     if (ex.booked_num >= ex.max_num)
-      return { ok: false, message: '考试名额已满' }
-    const pending = list.value.some(
-      a => a.student_id === input.student_id && a.exam_id === input.exam_id && a.status === '待审核',
+      return { ok: false, message: '该考试名额已满，请选择其他场次' }
+    const duplicated = list.value.some(
+      a =>
+        a.student_id === input.student_id
+        && a.exam_id === input.exam_id
+        && (a.status === '待审核' || a.status === '已通过'),
     )
-    if (pending)
-      return { ok: false, message: '您有待审核的该考试申请' }
+    if (duplicated)
+      return { ok: false, message: '您已申请过该考试，请勿重复提交' }
 
     const row: ExamApply = {
       id: nextNumericId(list.value),
@@ -32,7 +35,7 @@ export const useExamApplyStore = createGlobalState(() => {
     }
     list.value = [...list.value, row]
     updateExam(ei, { ...ex, booked_num: ex.booked_num + 1 })
-    return { ok: true, message: '考试申请已提交', apply: row }
+    return { ok: true, message: '考试申请提交成功', apply: row }
   }
 
   function setApplyStatus(applyId: number, status: ExamApply['status'], check_remark?: string) {

@@ -83,7 +83,7 @@ function handelLogout() {
           驾校管理后台
         </div>
         <div class="mt-1 text-xs leading-snug text-slate-500">
-          论文管理端：用户、车辆、场地、预约、考试、费用、资源、评价、统计
+          管理端：用户、车辆、场地、预约、考试、费用、资源、评价、统计
         </div>
       </div>
       <n-menu

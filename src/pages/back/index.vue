@@ -29,7 +29,7 @@ const stats = computed(() => ({
       管理员工作台
     </h2>
     <p class="mb-6 max-w-4xl text-sm text-slate-600">
-      对应论文<strong>（二）管理端功能实现</strong>：统计、用户、车辆、车辆申请、教学资源、场地、练车项目、练车预约、取消预约、考试信息、考试申请、评价、费用等模块入口见左侧菜单。
+      <strong>（二）管理端功能实现</strong>：统计、用户、车辆、车辆申请、教学资源、场地、练车项目、练车预约、取消预约、考试信息、考试申请、评价、费用等模块入口见左侧菜单。
     </p>
     <n-card title="快捷入口" size="small" class="mb-6" embedded>
       <n-space wrap>

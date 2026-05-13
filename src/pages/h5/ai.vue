@@ -23,8 +23,16 @@ function send() {
 </script>
 
 <template>
-  <div class="flex min-h-[60vh] flex-col rounded-xl bg-white shadow-sm">
-    <div class="flex-1 space-y-3 overflow-y-auto p-3">
+  <div class="flex min-h-[calc(100dvh-12rem)] flex-col rounded-xl bg-[#f5f5f5]">
+    <p class="mb-2 px-1 text-center text-[11px] text-slate-400">
+      论文图5.11 · 演示为本地规则回复（可对接百度 UNIT 等）
+    </p>
+    <div class="flex-1 space-y-3 overflow-y-auto px-2 py-2">
+      <template v-if="!turns.length">
+        <div class="mx-auto mt-6 max-w-[85%] rounded-lg bg-white px-3 py-2 text-center text-xs text-slate-500 shadow-sm">
+          您好，我是驾校智能助手，可咨询科目二/三、预约、考试与缴费等问题。
+        </div>
+      </template>
       <div
         v-for="t in turns"
         :key="t.id"
@@ -32,19 +40,23 @@ function send() {
         :class="t.role === 'user' ? 'justify-end' : 'justify-start'"
       >
         <div
-          class="max-w-[85%] rounded-2xl px-3 py-2 text-sm"
-          :class="t.role === 'user' ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-800'"
+          class="max-w-[78%] rounded-lg px-3 py-2 text-[15px] leading-snug shadow-sm"
+          :class="t.role === 'user' ? 'rounded-br-sm bg-[#95ec69]' : 'rounded-bl-sm bg-white'"
         >
           {{ t.content }}
-          <div class="mt-1 text-[10px] opacity-70">
-            {{ t.time }}
-          </div>
         </div>
       </div>
     </div>
-    <div class="flex gap-2 border-t border-slate-100 p-3">
-      <n-input v-model:value="input" placeholder="输入问题…" @keydown.enter.prevent="send" />
-      <n-button type="primary" @click="send">
+    <div class="mt-auto flex items-end gap-2 border-t border-black/6 bg-[#f7f7f7] p-2">
+      <n-input
+        v-model:value="input"
+        type="textarea"
+        :autosize="{ minRows: 1, maxRows: 4 }"
+        placeholder="发送消息…"
+        class="flex-1"
+        @keydown.enter.prevent.exact="send"
+      />
+      <n-button type="primary" class="mb-0.5 shrink-0" @click="send">
         发送
       </n-button>
     </div>

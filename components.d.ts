@@ -11,6 +11,7 @@ declare module 'vue' {
     ActionButton: typeof import('./src/components/ActionButton.vue')['default']
     BackCrudModal: typeof import('./src/components/BackCrudModal.vue')['default']
     ColorColumn: typeof import('./src/components/ColorColumn.vue')['default']
+    NBadge: typeof import('naive-ui')['NBadge']
     NButton: typeof import('naive-ui')['NButton']
     NCard: typeof import('naive-ui')['NCard']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
