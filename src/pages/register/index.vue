@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { AUTH_PAGE_BG_URL } from '~/constants/auth-page-bg'
 import { useStudentStore } from '~/store'
 import { nextNumericId } from '~/utils/driving-school'
 
@@ -57,13 +56,9 @@ function submit() {
 </script>
 
 <template>
-  <div
-    class="relative flex min-h-screen items-center justify-end overflow-y-auto bg-slate-800 bg-cover bg-center bg-no-repeat px-4 py-10 sm:px-8 md:pr-16 lg:pr-24"
-    :style="{ backgroundImage: `url(${AUTH_PAGE_BG_URL})` }"
-  >
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/45 via-black/20 to-transparent" />
+  <div class="relative flex min-h-screen items-center justify-center overflow-y-auto bg-slate-100 px-4 py-10 sm:px-8">
     <div
-      class="relative z-10 my-auto w-full max-w-lg max-h-[min(100vh-2rem,900px)] overflow-y-auto rounded-2xl border border-white/50 bg-white/80 p-8 shadow-2xl backdrop-blur-md sm:p-10"
+      class="relative z-10 my-auto w-full max-w-lg max-h-[min(100vh-2rem,900px)] overflow-y-auto rounded-2xl border border-slate-200 bg-white p-8 shadow-xl sm:p-10"
     >
       <h1 class="mb-2 text-center text-xl font-semibold text-slate-800">
         学员注册
