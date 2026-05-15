@@ -1,10 +1,14 @@
 import type { VehicleApplication } from '~/types/driving-school'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
+import { seedVehicleApplications } from '~/constants/back-office-list-seed'
 import { nextNumericId } from '~/utils/driving-school'
 
 export const useVehicleApplicationStore = createGlobalState(() => {
-  const list = useLocalStorage<VehicleApplication[]>('driving-school-vehicle-applies', [])
+  const list = useLocalStorage<VehicleApplication[]>(
+    'driving-school-vehicle-applies-v2',
+    () => seedVehicleApplications.map(r => ({ ...r })),
+  )
 
   function coachApply(input: { car_id: number, coach_id: number }) {
     const row: VehicleApplication = {

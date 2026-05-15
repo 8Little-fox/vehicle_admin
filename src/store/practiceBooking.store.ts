@@ -1,11 +1,15 @@
 import type { PracticeBooking } from '~/types/driving-school'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
+import { seedPracticeBookings } from '~/constants/back-office-list-seed'
 import { nextNumericId } from '~/utils/driving-school'
 import { useTrainingProjectStore } from './trainingProject.store'
 
 export const usePracticeBookingStore = createGlobalState(() => {
-  const list = useLocalStorage<PracticeBooking[]>('driving-school-practice-bookings', [])
+  const list = useLocalStorage<PracticeBooking[]>(
+    'driving-school-practice-bookings-v2',
+    () => seedPracticeBookings.map(r => ({ ...r })),
+  )
 
   function submitBooking(input: { student_id: number, project_id: number, coach_id: number, remark?: string }) {
     const { dataList: projects, updateData: updateProject } = useTrainingProjectStore()

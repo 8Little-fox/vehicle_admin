@@ -1,11 +1,15 @@
 import type { CancelBookingRequest } from '~/types/driving-school'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
+import { seedCancelBookings } from '~/constants/back-office-list-seed'
 import { nextNumericId } from '~/utils/driving-school'
 import { usePracticeBookingStore } from './practiceBooking.store'
 
 export const useCancelBookingStore = createGlobalState(() => {
-  const list = useLocalStorage<CancelBookingRequest[]>('driving-school-cancel-bookings', [])
+  const list = useLocalStorage<CancelBookingRequest[]>(
+    'driving-school-cancel-bookings-v2',
+    () => seedCancelBookings.map(r => ({ ...r })),
+  )
 
   function submitCancel(input: { appoint_id: number, student_id: number, cancel_reason: string }) {
     const row: CancelBookingRequest = {

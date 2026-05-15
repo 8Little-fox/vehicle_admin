@@ -1,11 +1,15 @@
 import type { ExamApply } from '~/types/driving-school'
 import { createGlobalState, useLocalStorage } from '@vueuse/core'
 import dayjs from 'dayjs'
+import { seedExamApplies } from '~/constants/back-office-list-seed'
 import { nextNumericId } from '~/utils/driving-school'
 import { useExamInfoStore } from './examInfo.store'
 
 export const useExamApplyStore = createGlobalState(() => {
-  const list = useLocalStorage<ExamApply[]>('driving-school-exam-applies', [])
+  const list = useLocalStorage<ExamApply[]>(
+    'driving-school-exam-applies-v2',
+    () => seedExamApplies.map(r => ({ ...r })),
+  )
 
   function applyExam(input: { student_id: number, exam_id: number }) {
     const { dataList: exams, updateData: updateExam } = useExamInfoStore()

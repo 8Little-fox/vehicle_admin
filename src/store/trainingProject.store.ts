@@ -43,7 +43,7 @@ const initData: TrainingProject[] = [
     train_date: d1,
     train_time: '08:30-11:30',
     max_num: 5,
-    booked_num: 0,
+    booked_num: 1,
     status: '可预约',
   },
 ]
